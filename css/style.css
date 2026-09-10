@@ -164,6 +164,11 @@ h1, h2, p {
   font-size: clamp(1.9rem, 4vw, 2.5rem);
 }
 
+#letter-loading-text {
+  font-size: clamp(1rem, 3vw, 1.3rem);
+  min-height: 2.6em;
+}
+
 .hint-button {
   width: auto;
   height: 38px;
@@ -345,6 +350,43 @@ button.primary {
   object-fit: cover;
   object-position: center 32%;
   box-shadow: 0 12px 28px rgba(24, 7, 12, 0.35);
+}
+
+.letter-video {
+  display: block;
+  width: min(100%, 320px);
+  max-height: 400px;
+  margin: 18px auto 0;
+  border-radius: 16px;
+  background: #000;
+  box-shadow: 0 12px 28px rgba(24, 7, 12, 0.35);
+}
+
+.confetti-piece {
+  position: fixed;
+  top: -5%;
+  z-index: 10002;
+  pointer-events: none;
+  animation-name: confettiBurst;
+  animation-timing-function: cubic-bezier(0.2, 0.6, 0.4, 1);
+  animation-fill-mode: forwards;
+}
+
+@keyframes confettiBurst {
+  0% {
+    transform: translate3d(0, 0, 0) rotate(0deg);
+    opacity: 1;
+  }
+  100% {
+    transform: translate3d(var(--drift, 0px), 100vh, 0) rotate(var(--spin, 360deg));
+    opacity: 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .confetti-piece {
+    display: none;
+  }
 }
 
 .modal-card h2 {

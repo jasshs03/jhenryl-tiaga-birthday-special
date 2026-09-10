@@ -306,8 +306,93 @@ function openLetter() {
   }
 
   setTimeout(() => {
-    setPanelVisible("letter");
+    startLetterLoading();
   }, 500);
+}
+
+const letterLoadingLines = [
+  "Loading your message...",
+  "Gathering hugs and cake slices...",
+  "Charging the confetti cannons...",
+  "Warming up the singing voice...",
+  "Untangling the string lights...",
+  "Proofreading (still not funny enough)...",
+  "Sealing it with a hug...",
+  "Almost there...",
+];
+const letterLoadingIntervalMs = 650;
+let letterLoadingTimer;
+
+function startLetterLoading() {
+  const loadingTextEl = document.getElementById("letter-loading-text");
+  if (!loadingTextEl) {
+    setPanelVisible("letter");
+    celebrateLetterReveal();
+    return;
+  }
+
+  clearInterval(letterLoadingTimer);
+  let lineIndex = 0;
+  loadingTextEl.textContent = letterLoadingLines[lineIndex];
+  setPanelVisible("letter-loading");
+
+  letterLoadingTimer = setInterval(() => {
+    lineIndex += 1;
+    if (lineIndex >= letterLoadingLines.length) {
+      clearInterval(letterLoadingTimer);
+      setPanelVisible("letter");
+      celebrateLetterReveal();
+      return;
+    }
+    loadingTextEl.textContent = letterLoadingLines[lineIndex];
+  }, letterLoadingIntervalMs);
+}
+
+function celebrateLetterReveal() {
+  launchConfettiBurst();
+  playLetterVideo();
+}
+
+function launchConfettiBurst() {
+  const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  if (prefersReducedMotion) return;
+
+  const colors = ["#ffd3df", "#ffe9a8", "#fff8fb", "#ff9fc0", "#c9f7ff", "#ffb703"];
+  const pieceCount = 90;
+
+  for (let i = 0; i < pieceCount; i++) {
+    const piece = document.createElement("div");
+    piece.className = "confetti-piece";
+
+    const size = 6 + Math.random() * 8;
+    const color = colors[Math.floor(Math.random() * colors.length)];
+    const duration = 1.6 + Math.random() * 1.2;
+    const delay = Math.random() * 0.4;
+    const drift = (Math.random() - 0.5) * 300;
+    const spin = 360 + Math.random() * 540;
+    const isSquare = Math.random() < 0.5;
+
+    piece.style.left = `${Math.random() * 100}%`;
+    piece.style.width = `${size}px`;
+    piece.style.height = `${size * (isSquare ? 1 : 0.4)}px`;
+    piece.style.background = color;
+    piece.style.borderRadius = isSquare ? "2px" : "999px";
+    piece.style.animationDuration = `${duration}s`;
+    piece.style.animationDelay = `${delay}s`;
+    piece.style.setProperty("--drift", `${drift}px`);
+    piece.style.setProperty("--spin", `${spin}deg`);
+
+    piece.addEventListener("animationend", () => piece.remove());
+    document.body.appendChild(piece);
+  }
+}
+
+function playLetterVideo() {
+  const video = document.getElementById("letter-video");
+  if (!video) return;
+
+  video.setAttribute("controls", "");
+  video.play().catch(() => {});
 }
 
 const envelope = document.getElementById("envelope-target");
