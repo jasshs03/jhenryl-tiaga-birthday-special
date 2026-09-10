@@ -1,0 +1,26 @@
+<svg width="320" height="220" viewBox="0 0 320 220" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop stop-color="#FFD8E9"/>
+      <stop offset="1" stop-color="#FFF7D6"/>
+    </linearGradient>
+  </defs>
+  <rect width="320" height="220" rx="26" fill="url(#bg)"/>
+  <ellipse cx="160" cy="150" rx="88" ry="48" fill="#F9C9A5"/>
+  <path d="M100 86L72 46L100 56L120 30L128 72L100 86Z" fill="#F8D5A7"/>
+  <path d="M220 86L248 46L220 56L200 30L192 72L220 86Z" fill="#F8D5A7"/>
+  <circle cx="122" cy="100" r="18" fill="#F9C9A5"/>
+  <circle cx="198" cy="100" r="18" fill="#F9C9A5"/>
+  <circle cx="116" cy="95" r="5" fill="#2F1B1D"/>
+  <circle cx="204" cy="95" r="5" fill="#2F1B1D"/>
+  <path d="M146 120C153 128 167 128 174 120" stroke="#7A424F" stroke-width="4" stroke-linecap="round"/>
+  <path d="M155 80L160 72L165 80" stroke="#7A424F" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+  <circle cx="160" cy="120" r="9" fill="#E58AA0"/>
+  <path d="M120 152C131 168 148 176 160 176C172 176 189 168 200 152" stroke="#F7A0A5" stroke-width="7" stroke-linecap="round"/>
+  <path d="M118 130L94 116" stroke="#F9C9A5" stroke-width="8" stroke-linecap="round"/>
+  <path d="M202 130L226 116" stroke="#F9C9A5" stroke-width="8" stroke-linecap="round"/>
+  <path d="M120 146L96 164" stroke="#F9C9A5" stroke-width="8" stroke-linecap="round"/>
+  <path d="M200 146L224 164" stroke="#F9C9A5" stroke-width="8" stroke-linecap="round"/>
+  <path d="M160 22C146 22 136 35 136 50C136 62 142 72 150 78C154 81 157 87 160 87C163 87 166 81 170 78C178 72 184 62 184 50C184 35 174 22 160 22Z" fill="#F8D5A7"/>
+  <path d="M152 42L160 30L168 42" stroke="#7A424F" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>

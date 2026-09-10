@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Secret Surprise</title>
+<link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+
+<div id="loading">
+<h1>🔒</h1>
+<h2>Initializing...</h2>
+<div class="loader"></div>
+</div>
+
+
+<div class="container">
+
+<div id="countdown">
+
+<h1>🔐 Surprise Locked</h1>
+<h2>Unlocks On</h2>
+<h2>September 12, 2026</h2>
+
+<div id="timer"></div>
+
+</div>
+
+
+<div id="lock" class="hidden">
+
+<h1>Enter Code</h1>
+
+<div class="code-box">
+<input id="c1" readonly>
+<input id="c2" readonly>
+<input id="c3" readonly>
+<input id="c4" readonly>
+</div>
+
+<div class="keypad">
+<button onclick="press(1)">1</button>
+<button onclick="press(2)">2</button>
+<button onclick="press(3)">3</button>
+<button onclick="press(4)">4</button>
+<button onclick="press(5)">5</button>
+<button onclick="press(6)">6</button>
+<button onclick="press(7)">7</button>
+<button onclick="press(8)">8</button>
+<button onclick="press(9)">9</button>
+<button onclick="clearCode()">⌫</button>
+<button onclick="press(0)">0</button>
+<button onclick="check()">✓</button>
+</div>
+
+<p id="error">✕ Wrong Passcode</p>
+
+</div>
+
+
+<div id="access" class="hidden">
+<h1>✓</h1>
+<h1>Access Granted</h1>
+
+<img src="images/cute-cat.png" class="cat-image">
+
+<p>
+Access Granted to<br>
+<strong>Jhenryl Tiaga</strong>
+</p>
+
+<p>Congrats You Passed!</p>
+
+<button onclick="showMail()">Confirm</button>
+
+</div>
+
+
+<div id="mail" class="hidden">
+<h1>You've got a mail!</h1>
+
+<div class="envelope" onclick="openLetter()">
+<div class="seal"></div>
+</div>
+
+<p>Click the mail to open</p>
+
+</div>
+
+
+<div id="letter" class="hidden">
+<h1>💌</h1>
+<h2>Happy Birthday 🤍</h2>
+<p>Your message here...</p>
+</div>
+
+</div>
+
+
+<script src="js/script.js"></script>
+
+</body>
+</html>
