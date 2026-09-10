@@ -222,10 +222,46 @@ function showMail() {
   setPanelVisible("mail");
 }
 
+const videoContinueButton = document.getElementById("video-continue-button");
+const videoContinueHint = document.getElementById("video-continue-hint");
+
 function showVideoGreeting() {
   playTone(494, 0.14, "sine", 0, 0.4);
   playTone(740, 0.2, "sine", 0.12, 0.4);
+  updateVideoContinueState();
   setPanelVisible("video-greeting");
+}
+
+function allVideosUnlocked() {
+  return Array.from(document.querySelectorAll(".video-card")).every((card) =>
+    card.classList.contains("unlocked")
+  );
+}
+
+function updateVideoContinueState() {
+  if (!videoContinueButton) return;
+
+  const unlocked = allVideosUnlocked();
+  videoContinueButton.classList.toggle("locked", !unlocked);
+
+  if (videoContinueHint) {
+    videoContinueHint.classList.toggle("hidden", unlocked);
+  }
+}
+
+function tryContinueFromVideos() {
+  if (!allVideosUnlocked()) {
+    playErrorSound();
+    if (videoContinueButton) {
+      videoContinueButton.classList.remove("shake");
+      void videoContinueButton.offsetWidth;
+      videoContinueButton.classList.add("shake");
+      setTimeout(() => videoContinueButton.classList.remove("shake"), 550);
+    }
+    return;
+  }
+
+  showMail();
 }
 
 function unlockVideo(card) {
@@ -236,13 +272,15 @@ function unlockVideo(card) {
   playTone(880, 0.16, "sine", 0.1, 0.35);
 
   const video = card.querySelector(".birthday-video");
-  if (!video) return;
+  if (video) {
+    video.setAttribute("controls", "");
+    document.querySelectorAll(".birthday-video").forEach((otherVideo) => {
+      if (otherVideo !== video) otherVideo.pause();
+    });
+    video.play().catch(() => {});
+  }
 
-  video.setAttribute("controls", "");
-  document.querySelectorAll(".birthday-video").forEach((otherVideo) => {
-    if (otherVideo !== video) otherVideo.pause();
-  });
-  video.play().catch(() => {});
+  updateVideoContinueState();
 }
 
 document.querySelectorAll(".video-card").forEach((card) => {

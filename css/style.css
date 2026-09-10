@@ -378,6 +378,18 @@ button.primary {
   margin-top: 4px;
 }
 
+.primary.locked {
+  opacity: 0.45;
+  filter: grayscale(0.4);
+}
+
+#video-continue-hint {
+  margin-top: 10px;
+  font-size: 0.85rem;
+  color: var(--accent);
+  font-weight: bold;
+}
+
 .envelope {
   width: min(72vw, 220px);
   height: 148px;
