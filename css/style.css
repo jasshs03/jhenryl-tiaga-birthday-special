@@ -26,6 +26,26 @@ body {
   color: var(--text);
 }
 
+#sound-toggle {
+  position: fixed;
+  top: 16px;
+  right: 16px;
+  z-index: 10000;
+  width: 46px;
+  height: 46px;
+  padding: 0;
+  border: 1px solid var(--card-border);
+  border-radius: 50%;
+  background: rgba(93, 16, 42, 0.72);
+  box-shadow: 0 8px 20px var(--shadow);
+  backdrop-filter: blur(6px);
+}
+
+#sound-toggle:disabled {
+  cursor: not-allowed;
+  opacity: 0.5;
+}
+
 .container {
   width: min(90vw, 560px);
   text-align: center;

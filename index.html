@@ -10,6 +10,8 @@
 
 <body>
 
+<button id="sound-toggle" type="button" aria-pressed="true" aria-label="Mute sound effects" title="Mute sound effects">🔊</button>
+
 <div id="loading">
 <h1>🔒</h1>
 <h2>Initializing...</h2>
@@ -82,7 +84,7 @@ Access Granted to<br>
 <div id="mail" class="panel hidden">
 <h1>You've got a mail!</h1>
 
-<div class="envelope" onclick="openLetter()">
+<div class="envelope" role="button" tabindex="0" aria-label="Open birthday letter" onclick="openLetter()">
 <div class="seal"></div>
 </div>
 
@@ -100,7 +102,7 @@ Access Granted to<br>
 </div>
 
 
-<script src="js/script.js?v=2"></script>
+<script src="js/script.js?v=3"></script>
 
 </body>
 </html>
