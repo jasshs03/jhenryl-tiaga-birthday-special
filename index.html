@@ -77,7 +77,45 @@ Access Granted to<br>
 
 <p>Congrats You Passed!</p>
 
-<button onclick="showMail()">Confirm</button>
+<button onclick="showVideoGreeting()">Confirm</button>
+
+</div>
+
+
+<div id="video-greeting" class="panel hidden">
+
+<h1>🎥 One More Surprise</h1>
+<p class="subtext">Tap each one to unlock</p>
+
+<div class="video-grid">
+
+<div class="video-card">
+<div class="video-lock" role="button" tabindex="0" aria-label="Unlock video 1">
+<span class="video-lock-icon">🔒</span>
+<span>Tap to reveal</span>
+</div>
+<video class="birthday-video" preload="none" playsinline src="video-greeting/vid1.mp4"></video>
+</div>
+
+<div class="video-card">
+<div class="video-lock" role="button" tabindex="0" aria-label="Unlock video 2">
+<span class="video-lock-icon">🔒</span>
+<span>Tap to reveal</span>
+</div>
+<video class="birthday-video" preload="none" playsinline src="video-greeting/vid2.mp4"></video>
+</div>
+
+<div class="video-card">
+<div class="video-lock" role="button" tabindex="0" aria-label="Unlock video 3">
+<span class="video-lock-icon">🔒</span>
+<span>Tap to reveal</span>
+</div>
+<video class="birthday-video" preload="none" playsinline src="video-greeting/vid3.mp4"></video>
+</div>
+
+</div>
+
+<button class="primary" onclick="showMail()">Continue</button>
 
 </div>
 
@@ -112,7 +150,7 @@ Access Granted to<br>
 </div>
 </div>
 
-<script src="js/birthday-surprise.js?v=3"></script>
+<script src="js/birthday-surprise.js?v=4"></script>
 
 </body>
 </html>

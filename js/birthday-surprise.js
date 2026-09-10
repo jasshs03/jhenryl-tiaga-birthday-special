@@ -215,6 +215,42 @@ function showMail() {
   setPanelVisible("mail");
 }
 
+function showVideoGreeting() {
+  playTone(494, 0.14, "sine", 0, 0.4);
+  playTone(740, 0.2, "sine", 0.12, 0.4);
+  setPanelVisible("video-greeting");
+}
+
+function unlockVideo(card) {
+  if (card.classList.contains("unlocked")) return;
+
+  card.classList.add("unlocked");
+  playTone(660, 0.1, "sine", 0, 0.35);
+  playTone(880, 0.16, "sine", 0.1, 0.35);
+
+  const video = card.querySelector(".birthday-video");
+  if (!video) return;
+
+  video.setAttribute("controls", "");
+  document.querySelectorAll(".birthday-video").forEach((otherVideo) => {
+    if (otherVideo !== video) otherVideo.pause();
+  });
+  video.play().catch(() => {});
+}
+
+document.querySelectorAll(".video-card").forEach((card) => {
+  const lock = card.querySelector(".video-lock");
+  if (!lock) return;
+
+  lock.addEventListener("click", () => unlockVideo(card));
+  lock.addEventListener("keydown", (event) => {
+    if (event.key === "Enter" || event.key === " ") {
+      event.preventDefault();
+      unlockVideo(card);
+    }
+  });
+});
+
 function openLetter() {
   playTone(440, 0.18, "triangle", 0, 0.35);
   playTone(660, 0.24, "sine", 0.14, 0.4);
