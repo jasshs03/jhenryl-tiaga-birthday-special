@@ -4,6 +4,45 @@ const correct = "0912";
 let audioContext;
 let wrongAttempts = 0;
 
+function initGlitter() {
+  const layer = document.getElementById("glitter-layer");
+  if (!layer) return;
+
+  const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  if (prefersReducedMotion) return;
+
+  const colors = ["#ffd3df", "#ffe9a8", "#fff8fb", "#ff9fc0", "#c9f7ff"];
+  const stars = ["✨", "⭐", "💫"];
+  const pieceCount = 45;
+
+  for (let i = 0; i < pieceCount; i++) {
+    const piece = document.createElement("div");
+    const isStar = Math.random() < 0.25;
+    piece.className = isStar ? "glitter-piece glitter-star" : "glitter-piece";
+
+    const size = isStar ? 12 + Math.random() * 12 : 3 + Math.random() * 5;
+    const duration = 8 + Math.random() * 10;
+    const delay = -Math.random() * duration;
+    const drift = (Math.random() - 0.5) * 160;
+    const color = colors[Math.floor(Math.random() * colors.length)];
+
+    piece.style.setProperty("--x", `${Math.random() * 100}%`);
+    piece.style.setProperty("--size", `${size}px`);
+    piece.style.setProperty("--duration", `${duration}s`);
+    piece.style.setProperty("--delay", `${delay}s`);
+    piece.style.setProperty("--drift", `${drift}px`);
+    piece.style.setProperty("--color", color);
+
+    if (isStar) {
+      piece.textContent = stars[Math.floor(Math.random() * stars.length)];
+    }
+
+    layer.appendChild(piece);
+  }
+}
+
+initGlitter();
+
 const hintButton = document.getElementById("hint-button");
 const hintText = document.getElementById("hint-text");
 const wrongModal = document.getElementById("wrong-modal");

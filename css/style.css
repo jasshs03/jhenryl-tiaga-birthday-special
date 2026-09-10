@@ -26,6 +26,58 @@ body {
   color: var(--text);
 }
 
+#glitter-layer {
+  position: fixed;
+  inset: 0;
+  z-index: 5;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.glitter-piece {
+  position: absolute;
+  top: -5%;
+  left: var(--x, 50%);
+  width: var(--size, 6px);
+  height: var(--size, 6px);
+  background: var(--color, #ffd3df);
+  border-radius: 50%;
+  opacity: 0;
+  box-shadow: 0 0 6px 1px var(--color, #ffd3df);
+  animation: glitterFall var(--duration, 10s) linear infinite;
+  animation-delay: var(--delay, 0s);
+}
+
+.glitter-piece.glitter-star {
+  background: none;
+  box-shadow: none;
+  font-size: var(--size, 14px);
+  line-height: 1;
+}
+
+@keyframes glitterFall {
+  0% {
+    transform: translate3d(0, 0, 0) rotate(0deg);
+    opacity: 0;
+  }
+  8% {
+    opacity: 1;
+  }
+  92% {
+    opacity: 0.9;
+  }
+  100% {
+    transform: translate3d(var(--drift, 40px), 115vh, 0) rotate(360deg);
+    opacity: 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  #glitter-layer {
+    display: none;
+  }
+}
+
 .container {
   width: min(90vw, 560px);
   text-align: center;
