@@ -5,12 +5,10 @@
 <title>Secret Surprise</title>
 <meta name="deployment-check" content="cloudflare-git-build-connected">
 <link rel="icon" type="image/svg+xml" href="images/cute-cat.svg">
-<link rel="stylesheet" href="css/style.css">
+<link rel="stylesheet" href="css/style.css?v=2">
 </head>
 
 <body>
-
-<button id="sound-toggle" type="button" aria-pressed="true" aria-label="Mute sound effects" title="Mute sound effects">🔊</button>
 
 <div id="loading">
 <h1>🔒</h1>
@@ -36,6 +34,9 @@
 
 <h1>Enter Code</h1>
 
+<button id="hint-button" class="hint-button" type="button" aria-expanded="false" aria-controls="hint-text">Hint Here</button>
+<p id="hint-text" class="hint-text hidden">A special date in MMDD format 🎂</p>
+
 <div class="code-box">
 <input id="c1" readonly>
 <input id="c2" readonly>
@@ -57,8 +58,6 @@
 <button onclick="press(0)">0</button>
 <button onclick="check()">✓</button>
 </div>
-
-<p id="error">✕ Wrong Passcode</p>
 
 </div>
 
@@ -101,8 +100,17 @@ Access Granted to<br>
 
 </div>
 
+<div id="wrong-modal" class="modal-backdrop hidden" role="dialog" aria-modal="true" aria-labelledby="wrong-modal-title">
+<div class="modal-card">
+<div class="modal-icon" aria-hidden="true">✕</div>
+<img class="wrong-answer-cat" src="image-folder/cat-wrong-ans.jpg" alt="Surprised cat reacting to the wrong password">
+<h2 id="wrong-modal-title">Wrong Password</h2>
+<p id="wrong-modal-message">Please check the hint and try again.</p>
+<button id="try-again-button" class="primary" type="button">Try Again</button>
+</div>
+</div>
 
-<script src="js/birthday-surprise.js?v=1"></script>
+<script src="js/birthday-surprise.js?v=2"></script>
 
 </body>
 </html>

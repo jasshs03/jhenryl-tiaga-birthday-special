@@ -2,44 +2,32 @@
 let code = "";
 const correct = "0912";
 let audioContext;
-let soundEnabled = localStorage.getItem("soundEnabled") !== "false";
+let wrongAttempts = 0;
 
-const soundToggle = document.getElementById("sound-toggle");
-updateSoundToggle();
+const hintButton = document.getElementById("hint-button");
+const hintText = document.getElementById("hint-text");
+const wrongModal = document.getElementById("wrong-modal");
+const wrongModalTitle = document.getElementById("wrong-modal-title");
+const wrongModalMessage = document.getElementById("wrong-modal-message");
+const tryAgainButton = document.getElementById("try-again-button");
 
-soundToggle.addEventListener("click", () => {
-  soundEnabled = !soundEnabled;
-  localStorage.setItem("soundEnabled", String(soundEnabled));
-  updateSoundToggle();
-
-  if (soundEnabled) {
-    playTone(660, 0.08, "sine", 0, 0.08);
-  }
+hintButton.addEventListener("click", () => {
+  const isExpanded = hintButton.getAttribute("aria-expanded") === "true";
+  hintButton.setAttribute("aria-expanded", String(!isExpanded));
+  hintText.classList.toggle("hidden", isExpanded);
+  playTone(700, 0.1, "sine", 0, 0.3);
 });
-
-function updateSoundToggle() {
-  soundToggle.textContent = soundEnabled ? "🔊" : "🔇";
-  soundToggle.setAttribute("aria-pressed", String(soundEnabled));
-  soundToggle.setAttribute("aria-label", soundEnabled ? "Mute sound effects" : "Enable sound effects");
-  soundToggle.title = soundEnabled ? "Mute sound effects" : "Enable sound effects";
-}
 
 function getAudioContext() {
   const AudioContextClass = window.AudioContext || window.webkitAudioContext;
 
-  if (!AudioContextClass) {
-    soundToggle.disabled = true;
-    soundToggle.title = "Sound effects are not supported by this browser";
-    return null;
-  }
+  if (!AudioContextClass) return null;
 
   audioContext ??= new AudioContextClass();
   return audioContext;
 }
 
-function playTone(frequency, duration, type = "sine", delay = 0, volume = 0.06) {
-  if (!soundEnabled) return;
-
+function playTone(frequency, duration, type = "sine", delay = 0, volume = 0.3) {
   const context = getAudioContext();
   if (!context) return;
 
@@ -67,14 +55,14 @@ function playTone(frequency, duration, type = "sine", delay = 0, volume = 0.06) 
 }
 
 function playSuccessSound() {
-  playTone(523, 0.14, "sine", 0);
-  playTone(659, 0.14, "sine", 0.12);
-  playTone(784, 0.22, "sine", 0.24);
+  playTone(523, 0.14, "sine", 0, 0.4);
+  playTone(659, 0.14, "sine", 0.12, 0.4);
+  playTone(784, 0.22, "sine", 0.24, 0.4);
 }
 
 function playErrorSound() {
-  playTone(220, 0.18, "square", 0, 0.035);
-  playTone(175, 0.24, "square", 0.16, 0.035);
+  playTone(220, 0.18, "square", 0, 0.2);
+  playTone(175, 0.24, "square", 0.16, 0.2);
 }
 
 window.onload = function () {
@@ -125,7 +113,7 @@ function press(num) {
     code += num;
     const input = document.getElementById("c" + code.length);
     if (input) input.value = num;
-    playTone(420 + num * 22, 0.07, "sine", 0, 0.045);
+    playTone(420 + num * 22, 0.07, "sine", 0, 0.25);
   }
 }
 
@@ -137,39 +125,60 @@ function clearCode(withSound = true) {
   }
 
   if (withSound) {
-    playTone(280, 0.1, "triangle", 0, 0.05);
+    playTone(280, 0.1, "triangle", 0, 0.3);
   }
 }
 
 function check() {
-  const error = document.getElementById("error");
-
   if (code === correct) {
     clearCode(false);
+    wrongAttempts = 0;
     playSuccessSound();
     setPanelVisible("access");
     return;
   }
 
+  wrongAttempts += 1;
   playErrorSound();
-  error.style.display = "block";
+  shakeScreen();
+  clearCode(false);
+  showWrongModal();
+}
+
+function shakeScreen() {
+  document.body.classList.remove("shake");
+  void document.body.offsetWidth;
+  document.body.classList.add("shake");
 
   setTimeout(() => {
-    error.style.display = "none";
-  }, 1500);
+    document.body.classList.remove("shake");
+  }, 550);
+}
 
-  clearCode(false);
+function showWrongModal() {
+  const reachedThreeAttempts = wrongAttempts >= 3;
+  wrongModalTitle.textContent = reachedThreeAttempts ? "WAG MONG HULAAN!" : "Wrong Password";
+  wrongModalMessage.textContent = reachedThreeAttempts
+    ? "Tingnan mo muna ang hint bago ka sumubok ulit."
+    : "Please check the hint and try again.";
+  wrongModal.classList.remove("hidden");
+  tryAgainButton.focus();
+}
+
+function closeWrongModal() {
+  wrongModal.classList.add("hidden");
+  document.querySelector(".keypad button").focus();
 }
 
 function showMail() {
-  playTone(587, 0.12, "sine", 0);
-  playTone(880, 0.2, "sine", 0.1);
+  playTone(587, 0.12, "sine", 0, 0.4);
+  playTone(880, 0.2, "sine", 0.1, 0.4);
   setPanelVisible("mail");
 }
 
 function openLetter() {
-  playTone(440, 0.18, "triangle", 0, 0.05);
-  playTone(660, 0.24, "sine", 0.14, 0.06);
+  playTone(440, 0.18, "triangle", 0, 0.35);
+  playTone(660, 0.24, "sine", 0.14, 0.4);
 
   const envelope = document.querySelector(".envelope");
   if (envelope) {
@@ -190,3 +199,11 @@ if (envelope) {
     }
   });
 }
+
+tryAgainButton.addEventListener("click", closeWrongModal);
+
+document.addEventListener("keydown", (event) => {
+  if (event.key === "Escape" && !wrongModal.classList.contains("hidden")) {
+    closeWrongModal();
+  }
+});
