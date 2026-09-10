@@ -2,6 +2,7 @@
 <html>
 <head>
 <title>Secret Surprise</title>
+<link rel="icon" type="image/svg+xml" href="images/cute-cat.svg">
 <link rel="stylesheet" href="css/style.css">
 </head>
 
@@ -16,7 +17,7 @@
 
 <div class="container">
 
-<div id="countdown">
+<div id="countdown" class="panel">
 
 <h1>🔐 Surprise Locked</h1>
 <h2>Unlocks On</h2>
@@ -27,7 +28,7 @@
 </div>
 
 
-<div id="lock" class="hidden">
+<div id="lock" class="panel hidden">
 
 <h1>Enter Code</h1>
 
@@ -58,11 +59,11 @@
 </div>
 
 
-<div id="access" class="hidden">
+<div id="access" class="panel hidden">
 <h1>✓</h1>
 <h1>Access Granted</h1>
 
-<img src="images/cute-cat.png" class="cat-image">
+<img src="images/cute-cat.svg" class="cat-image">
 
 <p>
 Access Granted to<br>
@@ -76,7 +77,7 @@ Access Granted to<br>
 </div>
 
 
-<div id="mail" class="hidden">
+<div id="mail" class="panel hidden">
 <h1>You've got a mail!</h1>
 
 <div class="envelope" onclick="openLetter()">
