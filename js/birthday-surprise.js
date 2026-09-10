@@ -218,6 +218,7 @@ function closeWrongModal() {
 function showMail() {
   playTone(587, 0.12, "sine", 0, 0.4);
   playTone(880, 0.2, "sine", 0.1, 0.4);
+  resetEnvelopeDodge();
   setPanelVisible("mail");
 }
 
@@ -261,7 +262,7 @@ function openLetter() {
   playTone(440, 0.18, "triangle", 0, 0.35);
   playTone(660, 0.24, "sine", 0.14, 0.4);
 
-  const envelope = document.querySelector(".envelope");
+  const envelope = document.getElementById("envelope-target");
   if (envelope) {
     envelope.classList.add("open");
   }
@@ -271,8 +272,68 @@ function openLetter() {
   }, 500);
 }
 
-const envelope = document.querySelector(".envelope");
+const envelope = document.getElementById("envelope-target");
+const mailHint = document.getElementById("mail-hint");
+const dodgesRequired = 5;
+let envelopeDodgeCount = 0;
+let envelopeUnlocked = false;
+
+function resetEnvelopeDodge() {
+  envelopeDodgeCount = 0;
+  envelopeUnlocked = false;
+
+  if (envelope) {
+    envelope.style.transform = "";
+  }
+
+  if (mailHint) {
+    mailHint.textContent = "Catch the mail to open it!";
+  }
+}
+
+function playDodgeSound() {
+  playTone(500, 0.06, "square", 0, 0.15);
+  playTone(320, 0.08, "square", 0.05, 0.15);
+}
+
+function dodgeEnvelope() {
+  if (envelopeUnlocked || !envelope) return false;
+
+  envelopeDodgeCount += 1;
+  playDodgeSound();
+
+  if (envelopeDodgeCount >= dodgesRequired) {
+    envelopeUnlocked = true;
+    envelope.style.transform = "";
+    if (mailHint) {
+      mailHint.textContent = "Got it! Click the mail to open";
+    }
+    return true;
+  }
+
+  const maxX = 90;
+  const maxY = 44;
+  const x = (Math.random() - 0.5) * 2 * maxX;
+  const y = (Math.random() - 0.5) * 2 * maxY;
+  envelope.style.transform = `translate(${x}px, ${y}px)`;
+
+  if (mailHint) {
+    mailHint.textContent = "Too slow! Try again!";
+  }
+
+  return true;
+}
+
 if (envelope) {
+  envelope.addEventListener("mouseenter", () => {
+    dodgeEnvelope();
+  });
+
+  envelope.addEventListener("click", () => {
+    if (dodgeEnvelope()) return;
+    openLetter();
+  });
+
   envelope.addEventListener("keydown", (event) => {
     if (event.key === "Enter" || event.key === " ") {
       event.preventDefault();
