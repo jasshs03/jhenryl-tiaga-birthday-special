@@ -26,3 +26,4 @@ Development:
 - HTML/CSS/JavaScript
 - Static website
 - Can deploy using Cloudflare Pages
+- Commit completed changes to Git, and include a summary and description when reporting them
