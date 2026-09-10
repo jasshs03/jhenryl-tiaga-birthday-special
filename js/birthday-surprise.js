@@ -273,14 +273,23 @@ function openLetter() {
 }
 
 const envelope = document.getElementById("envelope-target");
+const mailPanel = document.getElementById("mail");
 const mailHint = document.getElementById("mail-hint");
 const dodgesRequired = 5;
+const avoidRadius = 150;
+const dodgeCooldownMs = 260;
 let envelopeDodgeCount = 0;
 let envelopeUnlocked = false;
+let envelopeOffsetX = 0;
+let envelopeOffsetY = 0;
+let lastDodgeTime = 0;
 
 function resetEnvelopeDodge() {
   envelopeDodgeCount = 0;
   envelopeUnlocked = false;
+  envelopeOffsetX = 0;
+  envelopeOffsetY = 0;
+  lastDodgeTime = 0;
 
   if (envelope) {
     envelope.style.transform = "";
@@ -296,26 +305,64 @@ function playDodgeSound() {
   playTone(320, 0.08, "square", 0.05, 0.15);
 }
 
-function dodgeEnvelope() {
+function unlockEnvelope() {
+  envelopeUnlocked = true;
+  envelope.style.transform = "";
+  if (mailHint) {
+    mailHint.textContent = "Got it! Click the mail to open";
+  }
+}
+
+function moveEnvelopeAwayFrom(cursorX, cursorY) {
+  const rect = envelope.getBoundingClientRect();
+  const centerX = rect.left + rect.width / 2;
+  const centerY = rect.top + rect.height / 2;
+
+  let dx = centerX - cursorX;
+  let dy = centerY - cursorY;
+  const length = Math.hypot(dx, dy) || 1;
+  dx /= length;
+  dy /= length;
+
+  const wobble = (Math.random() - 0.5) * 1.1;
+  const finalDx = dx + wobble * -dy;
+  const finalDy = dy + wobble * dx;
+  const wobbleLength = Math.hypot(finalDx, finalDy) || 1;
+
+  const moveDistance = 100 + Math.random() * 60;
+  let nextOffsetX = envelopeOffsetX + (finalDx / wobbleLength) * moveDistance;
+  let nextOffsetY = envelopeOffsetY + (finalDy / wobbleLength) * moveDistance;
+
+  if (mailPanel) {
+    const panelRect = mailPanel.getBoundingClientRect();
+    const margin = 12;
+    const maxOffsetX = (panelRect.width - rect.width) / 2 - margin;
+    const maxOffsetY = (panelRect.height - rect.height) / 2 - margin;
+    nextOffsetX = Math.max(-maxOffsetX, Math.min(maxOffsetX, nextOffsetX));
+    nextOffsetY = Math.max(-maxOffsetY, Math.min(maxOffsetY, nextOffsetY));
+  }
+
+  envelopeOffsetX = nextOffsetX;
+  envelopeOffsetY = nextOffsetY;
+  envelope.style.transform = `translate(${envelopeOffsetX}px, ${envelopeOffsetY}px)`;
+}
+
+function dodgeFrom(cursorX, cursorY) {
   if (envelopeUnlocked || !envelope) return false;
+
+  const now = performance.now();
+  if (now - lastDodgeTime < dodgeCooldownMs) return true;
+  lastDodgeTime = now;
 
   envelopeDodgeCount += 1;
   playDodgeSound();
 
   if (envelopeDodgeCount >= dodgesRequired) {
-    envelopeUnlocked = true;
-    envelope.style.transform = "";
-    if (mailHint) {
-      mailHint.textContent = "Got it! Click the mail to open";
-    }
+    unlockEnvelope();
     return true;
   }
 
-  const maxX = 90;
-  const maxY = 44;
-  const x = (Math.random() - 0.5) * 2 * maxX;
-  const y = (Math.random() - 0.5) * 2 * maxY;
-  envelope.style.transform = `translate(${x}px, ${y}px)`;
+  moveEnvelopeAwayFrom(cursorX, cursorY);
 
   if (mailHint) {
     mailHint.textContent = "Too slow! Try again!";
@@ -324,13 +371,26 @@ function dodgeEnvelope() {
   return true;
 }
 
-if (envelope) {
-  envelope.addEventListener("mouseenter", () => {
-    dodgeEnvelope();
+if (envelope && mailPanel) {
+  document.addEventListener("mousemove", (event) => {
+    if (mailPanel.classList.contains("hidden") || envelopeUnlocked) return;
+
+    const rect = envelope.getBoundingClientRect();
+    const centerX = rect.left + rect.width / 2;
+    const centerY = rect.top + rect.height / 2;
+    const distance = Math.hypot(centerX - event.clientX, centerY - event.clientY);
+
+    if (distance < avoidRadius) {
+      dodgeFrom(event.clientX, event.clientY);
+    }
   });
 
-  envelope.addEventListener("click", () => {
-    if (dodgeEnvelope()) return;
+  envelope.addEventListener("click", (event) => {
+    const rect = envelope.getBoundingClientRect();
+    const centerX = rect.left + rect.width / 2;
+    const centerY = rect.top + rect.height / 2;
+
+    if (dodgeFrom(event.clientX ?? centerX, event.clientY ?? centerY)) return;
     openLetter();
   });
 
