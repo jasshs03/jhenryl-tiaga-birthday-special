@@ -1,17 +1,11 @@
 
 let code = "";
 const correct = "0912";
-const countdownEnabled = false; // Temporary bypass for testing access.
 
 window.onload = function () {
   setTimeout(() => {
     document.getElementById("loading").classList.add("hidden");
-
-    if (countdownEnabled) {
-      startCountdown();
-    } else {
-      setPanelVisible("lock");
-    }
+    setPanelVisible("lock");
   }, 2500);
 };
 
