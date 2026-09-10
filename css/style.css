@@ -81,6 +81,11 @@ body {
 .container {
   width: min(90vw, 560px);
   text-align: center;
+  transition: width 0.3s ease;
+}
+
+.container.video-wide {
+  width: min(95vw, 760px);
 }
 
 .panel {
@@ -177,7 +182,7 @@ h1, h2, p {
 .video-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 12px;
+  gap: 16px;
   margin: 20px 0 24px;
 }
 

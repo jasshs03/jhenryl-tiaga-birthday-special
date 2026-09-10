@@ -120,6 +120,8 @@ function setPanelVisible(panelId) {
   if (target) {
     target.classList.remove("hidden");
   }
+
+  document.querySelector(".container").classList.toggle("video-wide", panelId === "video-greeting");
 }
 
 function startCountdown() {
