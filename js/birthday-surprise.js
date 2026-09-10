@@ -111,7 +111,7 @@ function playErrorSound() {
 window.onload = function () {
   setTimeout(() => {
     document.getElementById("loading").classList.add("hidden");
-    setPanelVisible("lock");
+    startCountdown();
   }, 2500);
 };
 
@@ -130,6 +130,7 @@ function setPanelVisible(panelId) {
 
 function startCountdown() {
   const target = new Date("2026-09-12T00:00:00").getTime();
+  let timer;
 
   const updateTimer = () => {
     const now = new Date().getTime();
@@ -149,8 +150,8 @@ function startCountdown() {
     document.getElementById("timer").textContent = `${days} Days ${hours} Hours ${minutes} Minutes ${seconds} Seconds`;
   };
 
+  timer = setInterval(updateTimer, 1000);
   updateTimer();
-  const timer = setInterval(updateTimer, 1000);
 }
 
 function press(num) {
