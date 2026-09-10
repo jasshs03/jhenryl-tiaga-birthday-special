@@ -154,6 +154,40 @@ function startCountdown() {
   updateTimer();
 }
 
+let countdownClickCount = 0;
+
+function shakeElement(el, duration = 500) {
+  el.classList.remove("shake");
+  void el.offsetWidth;
+  el.classList.add("shake");
+  setTimeout(() => el.classList.remove("shake"), duration);
+}
+
+document.addEventListener("click", (event) => {
+  const loadingOverlay = document.getElementById("loading");
+  const countdownPanel = document.getElementById("countdown");
+  const countdownMessage = document.getElementById("countdown-message");
+
+  if (loadingOverlay.classList.contains("hidden") === false) return;
+  if (countdownPanel.classList.contains("hidden")) return;
+
+  countdownClickCount += 1;
+  shakeElement(countdownPanel);
+  playErrorSound();
+
+  let message;
+  if (countdownClickCount <= 2) {
+    message = "⏳ Wait for the countdown...";
+  } else if (countdownClickCount <= 5) {
+    message = "WAIT MO LANG WALA PA NGA NII!";
+  } else {
+    message = "KALMA KA LANG!";
+  }
+
+  countdownMessage.textContent = message;
+  countdownMessage.classList.remove("hidden");
+});
+
 function press(num) {
   if (code.length < 4) {
     code += num;
