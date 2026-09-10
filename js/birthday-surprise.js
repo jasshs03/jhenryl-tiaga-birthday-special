@@ -94,9 +94,13 @@ function playTone(frequency, duration, type = "sine", delay = 0, volume = 0.3) {
 }
 
 function playSuccessSound() {
-  playTone(523, 0.14, "sine", 0, 0.4);
-  playTone(659, 0.14, "sine", 0.12, 0.4);
-  playTone(784, 0.22, "sine", 0.24, 0.4);
+  playTone(392, 0.12, "triangle", 0, 0.28);
+  playTone(523, 0.16, "sine", 0.05, 0.45);
+  playTone(659, 0.16, "sine", 0.18, 0.45);
+  playTone(784, 0.16, "sine", 0.31, 0.45);
+  playTone(1047, 0.34, "sine", 0.44, 0.48);
+  playTone(1568, 0.18, "triangle", 0.5, 0.25);
+  playTone(1976, 0.24, "triangle", 0.58, 0.22);
 }
 
 function playErrorSound() {
